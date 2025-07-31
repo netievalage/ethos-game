@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eth OS Kod Avcısı</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
+      color: white;
+    }
+    #gameArea {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #1e1e1e, #000);
+      overflow: hidden;
+    }
+    #ethLogo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 60px;
+      height: 60px;
+      opacity: 0.8;
+      z-index: 1000;
+    }
+    .falling {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+    .falling img {
+      width: 100%;
+      height: 100%;
+    }
+    #player {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      background: #627eea;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+    #scoreboard {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 20px;
+    }
+    #endScreen {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      font-size: 28px;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameArea">
+    <img src="ethos_logo.png" id="ethLogo" />
+    <div id="scoreboard">Skor: 0</div>
+    <div id="player"></div>
+    <div id="endScreen">
+      <div id="finalScore">Skor: 0</div>
+      <button onclick="startGame()">Tekrar Oyna</button>
+    </div>
+  </div>
+
+  <script>
+    const gameArea = document.getElementById('gameArea');
+    const player = document.getElementById('player');
+    const scoreboard = document.getElementById('scoreboard');
+    const endScreen = document.getElementById('endScreen');
+    const finalScore = document.getElementById('finalScore');
+
+    let score = 0;
+    let gameRunning = true;
+
+    function createFalling() {
+      const elem = document.createElement('div');
+      elem.className = 'falling';
+
+      const img = document.createElement('img');
+      if (Math.random() < 0.7) {
+        img.src = 'ethos_logo.png'; // gerçek kod
+        img.dataset.type = 'good';
+      } else {
+        img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_block.svg/1024px-OOjs_UI_icon_block.svg.png'; // sahte sembol
+        img.dataset.type = 'bad';
+      }
+
+      elem.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+      elem.appendChild(img);
+      gameArea.appendChild(elem);
+
+      let top = 0;
+      const fallInterval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(fallInterval);
+          elem.remove();
+          return;
+        }
+        top += 4;
+        elem.style.top = top + 'px';
+
+        const playerRect = player.getBoundingClientRect();
+        const elemRect = elem.getBoundingClientRect();
+
+        const isCollide = !(playerRect.right < elemRect.left ||
+                            playerRect.left > elemRect.right ||
+                            playerRect.bottom < elemRect.top ||
+                            playerRect.top > elemRect.bottom);
+
+        if (isCollide) {
+          if (img.dataset.type === 'good') {
+            score++;
+          } else {
+            score = Math.max(0, score - 1);
+          }
+          scoreboard.innerText = 'Skor: ' + score;
+          clearInterval(fallInterval);
+          elem.remove();
+        }
+
+        if (top > window.innerHeight) {
+          clearInterval(fallInterval);
+          elem.remove();
+        }
+      }, 30);
+    }
+
+    function startGame() {
+      score = 0;
+      scoreboard.innerText = 'Skor: 0';
+      endScreen.style.display = 'none';
+      gameRunning = true;
+      player.style.left = '50%';
+
+      const gameDuration = 30000;
+      const fallInterval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(fallInterval);
+          return;
+        }
+        createFalling();
+      }, 500);
+
+      setTimeout(() => {
+        gameRunning = false;
+        finalScore.innerText = 'Skorun: ' + score;
+        endScreen.style.display = 'flex';
+      }, gameDuration);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      player.style.left = (e.clientX - 30) + 'px';
+    });
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
