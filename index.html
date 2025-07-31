@@ -1,9 +1,10 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Eth OS Code Catcher</title>
+  <title>Eth OS Kod Avcısı</title>
   <style>
     html, body {
       margin: 0;
@@ -76,11 +77,11 @@
 <body>
   <div id="gameArea">
     <img src="ethos_logo.png" id="ethLogo" />
-    <div id="scoreboard">Score: 0</div>
+    <div id="scoreboard">Skor: 0</div>
     <div id="player"></div>
     <div id="endScreen">
-      <div id="finalScore">Your Score: 0</div>
-      <button onclick="startGame()">Play Again</button>
+      <div id="finalScore">Skor: 0</div>
+      <button onclick="startGame()">Tekrar Oyna</button>
     </div>
   </div>
 
@@ -100,10 +101,10 @@
 
       const img = document.createElement('img');
       if (Math.random() < 0.7) {
-        img.src = 'ethos_logo.png'; // good
+        img.src = 'ethos_logo.png'; // gerçek kod
         img.dataset.type = 'good';
       } else {
-        img.src = 'exploding_ball.png'; // bad
+        img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_block.svg/1024px-OOjs_UI_icon_block.svg.png'; // sahte sembol
         img.dataset.type = 'bad';
       }
 
@@ -118,7 +119,7 @@
           elem.remove();
           return;
         }
-        top += 4;
+        top += 6;
         elem.style.top = top + 'px';
 
         const playerRect = player.getBoundingClientRect();
@@ -135,7 +136,7 @@
           } else {
             score = Math.max(0, score - 1);
           }
-          scoreboard.innerText = 'Score: ' + score;
+          scoreboard.innerText = 'Skor: ' + score;
           clearInterval(fallInterval);
           elem.remove();
         }
@@ -149,7 +150,7 @@
 
     function startGame() {
       score = 0;
-      scoreboard.innerText = 'Score: 0';
+      scoreboard.innerText = 'Skor: 0';
       endScreen.style.display = 'none';
       gameRunning = true;
       player.style.left = '50%';
@@ -165,7 +166,7 @@
 
       setTimeout(() => {
         gameRunning = false;
-        finalScore.innerText = 'Your Score: ' + score;
+        finalScore.innerText = 'Skorun: ' + score;
         endScreen.style.display = 'flex';
       }, gameDuration);
     }
