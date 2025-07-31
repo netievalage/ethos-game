@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Eth OS Kod Avcısı</title>
+  <title>Eth OS Code Catcher</title>
   <style>
     html, body {
       margin: 0;
@@ -76,11 +76,11 @@
 <body>
   <div id="gameArea">
     <img src="ethos_logo.png" id="ethLogo" />
-    <div id="scoreboard">Skor: 0</div>
+    <div id="scoreboard">Score: 0</div>
     <div id="player"></div>
     <div id="endScreen">
-      <div id="finalScore">Skor: 0</div>
-      <button onclick="startGame()">Tekrar Oyna</button>
+      <div id="finalScore">Your Score: 0</div>
+      <button onclick="startGame()">Play Again</button>
     </div>
   </div>
 
@@ -100,10 +100,10 @@
 
       const img = document.createElement('img');
       if (Math.random() < 0.7) {
-        img.src = 'ethos_logo.png'; // gerçek kod
+        img.src = 'ethos_logo.png'; // good
         img.dataset.type = 'good';
       } else {
-        img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_block.svg/1024px-OOjs_UI_icon_block.svg.png'; // sahte sembol
+        img.src = 'exploding_ball.png'; // bad
         img.dataset.type = 'bad';
       }
 
@@ -135,7 +135,7 @@
           } else {
             score = Math.max(0, score - 1);
           }
-          scoreboard.innerText = 'Skor: ' + score;
+          scoreboard.innerText = 'Score: ' + score;
           clearInterval(fallInterval);
           elem.remove();
         }
@@ -149,7 +149,7 @@
 
     function startGame() {
       score = 0;
-      scoreboard.innerText = 'Skor: 0';
+      scoreboard.innerText = 'Score: 0';
       endScreen.style.display = 'none';
       gameRunning = true;
       player.style.left = '50%';
@@ -165,7 +165,7 @@
 
       setTimeout(() => {
         gameRunning = false;
-        finalScore.innerText = 'Skorun: ' + score;
+        finalScore.innerText = 'Your Score: ' + score;
         endScreen.style.display = 'flex';
       }, gameDuration);
     }
